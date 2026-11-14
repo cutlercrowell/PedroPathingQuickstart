@@ -111,8 +111,8 @@ public class Constants {
 
         // Stopper Servo Positions
         public static double STOPPER_NEUTRAL_POS = 0.25;
-        public static double STOPPER_OPEN_POS = 0.25;
-        public static double STOPPER_CLOSED_POS = 0.05;
+        public static double STOPPER_OPEN_POS = 0.5;
+        public static double STOPPER_CLOSED_POS = 0.3;
 
         // Feeder CRServo Power Levels (-1.0 to 1.0)
         public static double FEEDER_SHOOT_POWER = -1.0; // Predefined full speed in reverse to feed shooter
