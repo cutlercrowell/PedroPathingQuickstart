@@ -16,10 +16,11 @@ import java.util.Locale;
  * SpectrixAutoPositionA - Autonomous OpMode for Position A starting location.
  *
  * <p>Execution Flow:
- * 1. Drive to position (12, 30) facing 30° heading.
+ * 1. Drive to position (20.71, -15.04) facing 50° heading.
  * 2. Shoot 4 times (ramp shooter to target RPM, open stopper, feed balls).
- * 3. Drive to (-48, 0) facing 0° heading and hand off.
- * 4. Save final pose to OpModeStorage & SpectrixTeleOp.startingPose upon completion.
+ * 3. Drive to waypoint (7, 40).
+ * 4. Drive to final handoff position (-28.6, 58.1) facing 0° heading and hand off.
+ * 5. Save final pose to OpModeStorage & SpectrixTeleOp.startingPose upon completion.
  */
 @Autonomous(name = "SpectrixAuto Position A", group = "Autonomous")
 public class SpectrixAutoPositionA extends LinearOpMode {
@@ -35,13 +36,17 @@ public class SpectrixAutoPositionA extends LinearOpMode {
         Pose startPose = new Pose(0, 0, 0); // Starting position for Position A
         follower.setPose(startPose);
 
-        // Path 1: Drive to shooting position: X: 12 in, Y: 30 in, Heading: 30°
-        Pose shootPose = new Pose(12, 30, Math.toRadians(30));
-        Path pathShoot = line(startPose, shootPose).linear(0, Math.toRadians(30));
+        // Path 1: Drive to shooting position: X: 20.71 in, Y: -15.04 in, Heading: 50°
+        Pose shootPose = new Pose(20.71, -15.04, Math.toRadians(50.0));
+        Path pathShoot = line(startPose, shootPose).linear(0, Math.toRadians(50.0));
 
-        // Path 2: Drive to handoff position: X: -48 in, Y: 0 in, Heading: 0°
-        Pose handoffPose = new Pose(-48, 0, 0);
-        Path pathHandoff = line(shootPose, handoffPose).linear(Math.toRadians(30), 0);
+        // Path 2: Drive from shoot position to waypoint (7, 40)
+        Pose waypointPose = new Pose(7, 40, Math.toRadians(25.0));
+        Path pathWaypoint = line(shootPose, waypointPose).linear(Math.toRadians(50.0), Math.toRadians(25.0));
+
+        // Path 3: Drive from waypoint to handoff position: X: -28.6 in, Y: 58.1 in, Heading: 0°
+        Pose handoffPose = new Pose(-28.6, 58.1, 0);
+        Path pathHandoff = line(waypointPose, handoffPose).linear(Math.toRadians(25.0), 0);
 
         telemetry.addData("Status", "SpectrixAuto Position A Initialized & Ready!");
         telemetry.addData("Start Pose", startPose);
@@ -51,14 +56,17 @@ public class SpectrixAutoPositionA extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        // --- Action 1: Drive to shooting position (12, 30) @ 30° ---
-        followPath(pathShoot, "1/3: Driving to Shoot Position (12, 30) @ 30°");
+        // --- Action 1: Drive to shooting position (20.71, -15.04) @ 50° ---
+        followPath(pathShoot, "1/4: Driving to Shoot Position");
 
         // --- Action 2: Shoot 4 times (runs shooter flywheel & feeds balls for 3.0 seconds) ---
-        shootBalls(3.0, "2/3: Shooting 4 Balls");
+        shootBalls(3.0, "2/4: Shooting 4 Balls");
 
-        // --- Action 3: Drive to (-48, 0) @ 0° heading and hand off ---
-        followPath(pathHandoff, "3/3: Driving to (-48, 0) @ 0° Handoff Position");
+        // --- Action 3: Drive to waypoint (7, 40) ---
+        followPath(pathWaypoint, "3/4: Driving to Waypoint (7, 40)");
+
+        // --- Action 4: Drive to handoff position (-28.6, 58.1) @ 0° heading ---
+        followPath(pathHandoff, "4/4: Driving to Handoff (-28.6, 58.1)");
 
         follower.stop();
         ballMechanism.idle();

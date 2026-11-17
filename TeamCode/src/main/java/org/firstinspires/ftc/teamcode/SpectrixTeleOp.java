@@ -378,7 +378,7 @@ public class SpectrixTeleOp extends OpMode {
         telemetry.addData("savedDown (Pos 2)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseDown.x(), savedPoseDown.y(), Math.toDegrees(savedPoseDown.heading())));
         telemetry.addData("savedLeft (Pos 3)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseLeft.x(), savedPoseLeft.y(), Math.toDegrees(savedPoseLeft.heading())));
         telemetry.addData("savedRight (Pos 4)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseRight.x(), savedPoseRight.y(), Math.toDegrees(savedPoseRight.heading())));
-        telemetry.addData("mechanism", String.format(Locale.US, "BarDown: %b | Transfer: %.2f | Feeder: %.2f", ballMechanism.isBarDown(), ballMechanism.getTransferPower(), ballMechanism.getFeederPower()));
+        telemetry.addData("mechanism", String.format(Locale.US, "BarDown: %b | Stopper: %.2f | Transfer: %.2f | Feeder: %.2f", ballMechanism.isBarDown(), ballMechanism.getStopperPosition(), ballMechanism.getTransferPower(), ballMechanism.getFeederPower()));
         telemetry.addData("slowLimit", String.format(Locale.US, "%.1f", slowModeMultiplier));
         telemetry.update();
     }
