@@ -45,7 +45,7 @@ public class SpectrixAutoPositionA extends LinearOpMode {
         Path pathWaypoint = line(shootPose, waypointPose).linear(Math.toRadians(50.0), Math.toRadians(25.0));
 
         // Path 3: Drive from waypoint to handoff position: X: -28.6 in, Y: 58.1 in, Heading: 0°
-        Pose handoffPose = new Pose(-28.6, 58.1, 0);
+        Pose handoffPose = new Pose(-3, 120, 0);
         Path pathHandoff = line(waypointPose, handoffPose).linear(Math.toRadians(25.0), 0);
 
         telemetry.addData("Status", "SpectrixAuto Position A Initialized & Ready!");
