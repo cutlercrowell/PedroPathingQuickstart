@@ -59,8 +59,8 @@ public class SpectrixAutoPositionA extends LinearOpMode {
         // --- Action 1: Drive to shooting position (20.71, -15.04) @ 50° ---
         followPath(pathShoot, "1/4: Driving to Shoot Position");
 
-        // --- Action 2: Shoot 4 times (runs shooter flywheel & feeds balls for 3.0 seconds) ---
-        shootBalls(3.0, "2/4: Shooting 4 Balls");
+        // --- Action 2: Shoot 4 times (runs shooter flywheel & feeds balls for 4.0 seconds) ---
+        shootBalls(4.0, "2/4: Shooting 4 Balls");
 
         // --- Action 3: Drive to waypoint (7, 40) ---
         followPath(pathWaypoint, "3/4: Driving to Waypoint (7, 40)");
