@@ -30,10 +30,11 @@ public class SpectrixTeleOp extends OpMode {
     private Pose savedPoseRight = Pose.zero();
 
     // 4 Pre-Coded Preset Positions (Recalled via Right Bumper + D-Pad Arrow)
-    private static final Pose PRESET_PARKING_BLUE = new Pose(26.68, -49.84, Math.toRadians(90.0));
+    /** private static final Pose PRESET_PARKING_BLUE = new Pose(26.68, -49.84, Math.toRadians(90.0));
     private static final Pose PRESET_PARKING_RED = new Pose(99.27, 74.51, Math.toRadians(270.0));
     private static final Pose PRESET_SHOOTING_AREA_LEFT = new Pose(17.21, 10.67, Math.toRadians(360.0));
     private static final Pose PRESET_SHOOTING_AREA_RIGHT = new Pose(113.19, 9.84, Math.toRadians(180.0));
+    */
 
     private Pose activeTargetPose = Pose.zero();
     private String activeTargetName = "";
@@ -274,12 +275,13 @@ public class SpectrixTeleOp extends OpMode {
         }
 
         // Recall Pre-Coded Preset Positions: Right Bumper + D-Pad Direction
-        if (gamepad1.right_bumper && !gamepad1.left_bumper && dpadActive) {
+        /** if (gamepad1.right_bumper && !gamepad1.left_bumper && dpadActive) {
             if (dpadUpPressed) startAutomatedDrive(PRESET_PARKING_BLUE, "Parking Blue");
             else if (dpadDownPressed) startAutomatedDrive(PRESET_PARKING_RED, "Parking Red");
             else if (dpadLeftPressed) startAutomatedDrive(PRESET_SHOOTING_AREA_LEFT, "Shooting Area Left");
             else if (dpadRightPressed) startAutomatedDrive(PRESET_SHOOTING_AREA_RIGHT, "Shooting Area Right");
         }
+         */
 
         // Ball Mechanism Controls (Intake Toggle Normal/Reverse, Outtake, Shooting)
         if (gamepad1.right_bumper && !dpadActive && !gamepad1.left_bumper) {

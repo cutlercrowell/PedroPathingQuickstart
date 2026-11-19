@@ -89,24 +89,24 @@ This document records the established architectural patterns, hardware configura
 - **Mandatory `follower.update()`**: `follower.update()` MUST be called once per loop iteration in all OpModes to maintain localizer tracking and motor control outputs.
 
 ### TeleOp Control Scheme & Button Mapping Standard
-| Input / Gesture | Function / Behavior |
-| :--- | :--- |
-| **Left Stick Y/X** | Field-centric Translational Drive (Forward/Backward, Strafe Left/Right) |
-| **Right Stick Vector (X/Y)** | **Absolute Pointing Steering**: Robot heading matches the exact 360° angle pointed at by the right stick (Up = 0°, Right = 90°, Down = 180°, Left = 270°); holds last pointed heading on release. |
-| **Left Trigger (`L2`)** | Analog Slow Driving Speed (scales max speed down to `slowModeMultiplier`) |
-| **Left Trigger (`L2`) + D-Pad Up / Down** | Adjusts `slowModeMultiplier` in steps of `0.1` (clamped between `0.1` and `1.0`) |
-| **Left Trigger (`L2`) + D-Pad Left / Right** | Adjusts target shooter RPM down/up in steps of `100` RPM (modifies shooting RPM when shooting, or idle RPM when idle) |
-| **Y Button (without D-Pad)** | BallMechanism: Toggles flower release bar Up (`barUp()`, $0.5$) or Down (`barDown()`, $0.5 \pm 0.45$) |
-| **X Button (without D-Pad)** | BallMechanism: **Toggles** `INTAKE` mode (Forward / $80\%$) ON <-> OFF |
-| **Left Bumper (`L1`) + X Button** | BallMechanism: **Toggles** `INTAKE_REVERSE` mode (Reverse / $-60\%$) ON <-> OFF, or reverses direction if already intaking forward |
-| **Left Bumper (`L1`) (without X or D-Pad)** | BallMechanism: State transition to `OUTTAKE` (`transfer` motor backwards $60\%$ / `-0.6`); turns intake OFF when released |
-| **Right Bumper (`R1`) (without D-Pad)** | BallMechanism: State transition to `SHOOTING` (shooter @ 4750 RPM default, stopper OPEN $0.5$ when at speed, `feeder` CRServo reverse $-1.0$, `transfer` motor continuous $80\%$ / `0.8`); turns intake OFF when released |
-| **D-Pad Up / Down / Left / Right (alone)** | **Snap Turns**: Single press automatically turns the robot all the way to heading 0° (Up), 180° (Down), 90° (Left), or 270° (Right) using smooth PID control. |
-| **Y + D-Pad Up / Down / Left / Right** | Saves current robot pose and heading to Slot 1 (Up), Slot 2 (Down), Slot 3 (Left), or Slot 4 (Right) |
-| **A + D-Pad Up / Down / Left / Right** | Recalls and drives autonomously to user-saved pose Slot 1 (Up), Slot 2 (Down), Slot 3 (Left), or Slot 4 (Right) |
+| Input / Gesture                                          | Function / Behavior |
+|:---------------------------------------------------------| :--- |
+| **Left Stick Y/X**                                       | Field-centric Translational Drive (Forward/Backward, Strafe Left/Right) |
+| **Right Stick Vector (X/Y)**                             | **Absolute Pointing Steering**: Robot heading matches the exact 360° angle pointed at by the right stick (Up = 0°, Right = 90°, Down = 180°, Left = 270°); holds last pointed heading on release. |
+| **Left Trigger (`L2`)**                                  | Analog Slow Driving Speed (scales max speed down to `slowModeMultiplier`) |
+| **Left Trigger (`L2`) + D-Pad Up / Down**                | Adjusts `slowModeMultiplier` in steps of `0.1` (clamped between `0.1` and `1.0`) |
+| **Left Trigger (`L2`) + D-Pad Left / Right**             | Adjusts target shooter RPM down/up in steps of `100` RPM (modifies shooting RPM when shooting, or idle RPM when idle) |
+| **Y Button (without D-Pad)**                             | BallMechanism: Toggles flower release bar Up (`barUp()`, $0.5$) or Down (`barDown()`, $0.5 \pm 0.45$) |
+| **X Button (without D-Pad)**                             | BallMechanism: **Toggles** `INTAKE` mode (Forward / $80\%$) ON <-> OFF |
+| **Left Bumper (`L1`) + X Button**                        | BallMechanism: **Toggles** `INTAKE_REVERSE` mode (Reverse / $-60\%$) ON <-> OFF, or reverses direction if already intaking forward |
+| **Left Bumper (`L1`) (without X or D-Pad)**              | BallMechanism: State transition to `OUTTAKE` (`transfer` motor backwards $60\%$ / `-0.6`); turns intake OFF when released |
+| **Right Bumper (`R1`) (without D-Pad)**                  | BallMechanism: State transition to `SHOOTING` (shooter @ 4750 RPM default, stopper OPEN $0.5$ when at speed, `feeder` CRServo reverse $-1.0$, `transfer` motor continuous $80\%$ / `0.8`); turns intake OFF when released |
+| **D-Pad Up / Down / Left / Right (alone)**               | **Snap Turns**: Single press automatically turns the robot all the way to heading 0° (Up), 180° (Down), 90° (Left), or 270° (Right) using smooth PID control. |
+| **Y + D-Pad Up / Down / Left / Right**                   | Saves current robot pose and heading to Slot 1 (Up), Slot 2 (Down), Slot 3 (Left), or Slot 4 (Right) |
+| **A + D-Pad Up / Down / Left / Right**                   | Recalls and drives autonomously to user-saved pose Slot 1 (Up), Slot 2 (Down), Slot 3 (Left), or Slot 4 (Right) |
 | **Right Bumper (`R1`) + D-Pad Up / Down / Left / Right** | Recalls pre-coded preset positions: Parking Blue (Up: 26.68, -49.84, 90°), Parking Red (Down: 99.27, 74.51, 270°), Shooting Area Left (Left: 17.21, 10.67, 360°), Shooting Area Right (Right: 113.19, 9.84, 180°) |
-| **Left Bumper + Right Bumper + X** | Recalibrates robot position to origin `(0, 0, 0°)` |
-| **B Button** | Aborts automated return-to-position drive |
+| **Left Bumper + Right Bumper + X**                       | Recalibrates robot position to origin `(0, 0, 0°)` |
+| **B Button**                                             | Aborts automated return-to-position drive |
 
 ---
 
