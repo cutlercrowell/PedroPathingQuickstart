@@ -1,15 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode
 
 import com.pedropathing.drivetrain.DrivePowers;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.ManualDrive;
 import com.pedropathing.math.Pose;
 import com.pedropathing.math.Velocity;
+import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.pedropathing.utils.Angle;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.util.Locale;
 
@@ -17,6 +20,10 @@ import java.util.Locale;
 public class SpectrixTeleOp extends OpMode {
     private Follower follower;
     private BallMechanism ballMechanism;
+    private DcMotorEx frontLeft;
+    private DcMotorEx frontRight;
+    private DcMotorEx backLeft;
+    private DcMotorEx backRight;
 
     public static Pose startingPose; // See ExampleAuto to understand how to use this
     private boolean automatedDrive;
@@ -30,11 +37,10 @@ public class SpectrixTeleOp extends OpMode {
     private Pose savedPoseRight = Pose.zero();
 
     // 4 Pre-Coded Preset Positions (Recalled via Right Bumper + D-Pad Arrow)
-    /** private static final Pose PRESET_PARKING_BLUE = new Pose(26.68, -49.84, Math.toRadians(90.0));
+    private static final Pose PRESET_PARKING_BLUE = new Pose(26.68, -49.84, Math.toRadians(90.0));
     private static final Pose PRESET_PARKING_RED = new Pose(99.27, 74.51, Math.toRadians(270.0));
     private static final Pose PRESET_SHOOTING_AREA_LEFT = new Pose(17.21, 10.67, Math.toRadians(360.0));
     private static final Pose PRESET_SHOOTING_AREA_RIGHT = new Pose(113.19, 9.84, Math.toRadians(180.0));
-    */
 
     private Pose activeTargetPose = Pose.zero();
     private String activeTargetName = "";
@@ -78,6 +84,12 @@ public class SpectrixTeleOp extends OpMode {
         follower = Constants.create(hardwareMap);
         follower.setPose((startingPose == null) ? Pose.zero() : startingPose);
         follower.update();
+
+        // init the motors for the telemetry thingy
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
         // Initialize Ball Mechanism Subsystem
         ballMechanism = new BallMechanism(hardwareMap);
@@ -275,13 +287,12 @@ public class SpectrixTeleOp extends OpMode {
         }
 
         // Recall Pre-Coded Preset Positions: Right Bumper + D-Pad Direction
-        /** if (gamepad1.right_bumper && !gamepad1.left_bumper && dpadActive) {
+        if (gamepad1.right_bumper && !gamepad1.left_bumper && dpadActive) {
             if (dpadUpPressed) startAutomatedDrive(PRESET_PARKING_BLUE, "Parking Blue");
             else if (dpadDownPressed) startAutomatedDrive(PRESET_PARKING_RED, "Parking Red");
             else if (dpadLeftPressed) startAutomatedDrive(PRESET_SHOOTING_AREA_LEFT, "Shooting Area Left");
             else if (dpadRightPressed) startAutomatedDrive(PRESET_SHOOTING_AREA_RIGHT, "Shooting Area Right");
         }
-         */
 
         // Ball Mechanism Controls (Intake Toggle Normal/Reverse, Outtake, Shooting)
         if (gamepad1.right_bumper && !dpadActive && !gamepad1.left_bumper) {
@@ -376,6 +387,18 @@ public class SpectrixTeleOp extends OpMode {
         telemetry.addData("posLock", isPositionLocked ? String.format(Locale.US, "X: %.2f, Y: %.2f", targetPositionPose.x(), targetPositionPose.y()) : "OFF");
         telemetry.addData("targetHeading", String.format(Locale.US, "%.2f°", Math.toDegrees(targetHeading)));
         telemetry.addData("velocity", String.format(Locale.US, "VX: %.2f, VY: %.2f, W: %.2f°/s", velocity.vx, velocity.vy, Math.toDegrees(velocity.omega)));
+
+        // add motor ticks to telemetry
+        telemetry.addData("frontLeft Ticks", frontLeft.getCurrentPosition());
+        telemetry.addData("frontRight Ticks", frontRight.getCurrentPosition());
+        telemetry.addData("backLeft Ticks", backLeft.getCurrentPosition());
+        telemetry.addData("backRight Ticks", backRight.getCurrentPosition());
+
+        if (follower.drivetrain instanceof Mecanum) {
+            Mecanum mecanum = (Mecanum) follower.drivetrain;
+            telemetry.addData("wheels", String.format(Locale.US, "FL: %.2f | FR: %.2f | BL: %.2f | BR: %.2f", mecanum.wheelPowers[0], mecanum.wheelPowers[1], mecanum.wheelPowers[2], mecanum.wheelPowers[3]));
+        }
+
         telemetry.addData("savedUp (Pos 1)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseUp.x(), savedPoseUp.y(), Math.toDegrees(savedPoseUp.heading())));
         telemetry.addData("savedDown (Pos 2)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseDown.x(), savedPoseDown.y(), Math.toDegrees(savedPoseDown.heading())));
         telemetry.addData("savedLeft (Pos 3)", String.format(Locale.US, "X: %.2f, Y: %.2f, H: %.2f°", savedPoseLeft.x(), savedPoseLeft.y(), Math.toDegrees(savedPoseLeft.heading())));

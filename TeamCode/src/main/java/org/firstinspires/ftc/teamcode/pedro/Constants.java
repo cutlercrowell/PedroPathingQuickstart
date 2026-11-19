@@ -112,7 +112,7 @@ public class Constants {
         public static double BAR_OFFSET = 0.45; // right = 0.5 + 0.45 (0.95), left = 0.5 - 0.45 (0.05)
 
         // Stopper Servo Positions
-        public static double STOPPER_NEUTRAL_POS = 0.8;
+        public static double STOPPER_NEUTRAL_POS = 0.53;
         public static double STOPPER_OPEN_POS = 0.8;
         public static double STOPPER_CLOSED_POS = 0.53;
 
